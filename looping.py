@@ -1,15 +1,12 @@
 from langgraph.graph import StateGraph, START, END
-import random
 from typing import List, TypedDict
 from IPython.display import Image, display
 
 class AgentState(TypedDict):
-    number: List[int]
     counter: int
 
-def random_node(state: AgentState) -> AgentState:
-    """Generates a random number from 0 to 10"""
-    state["number"].append(random.randint(0, 10))
+def decrement_node(state: AgentState) -> AgentState:
+    """Function to decrement the counter by 1"""
     state["counter"] -= 1
 
     return state
@@ -24,14 +21,14 @@ def should_continue(state: AgentState) -> AgentState:
     
 graph = StateGraph(AgentState)
 
-graph.add_node("random", random_node)
+graph.add_node("decrement", decrement_node)
 
-graph.add_edge(START, "random")
+graph.add_edge(START, "decrement")
 graph.add_conditional_edges(
-    "random",     # Source node
-    should_continue, # Action
+    "decrement",
+    should_continue,
     {
-        "loop": "random",  
+        "loop": "decrement",  
         "exit": END          
     }
 )
@@ -40,4 +37,5 @@ app = graph.compile()
 
 display(Image(app.get_graph().draw_mermaid_png()))
 
-app.invoke({"number":[], "counter":5})
+input = AgentState(number=[], counter=5)
+app.invoke(input)

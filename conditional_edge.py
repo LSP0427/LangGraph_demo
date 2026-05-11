@@ -38,14 +38,12 @@ graph.add_node("router", lambda state:state) # passthrough function
 graph.add_edge(START, "router") 
 
 graph.add_conditional_edges(
-    "router",
-    decide_next_node, 
-
+    "router",   # Source node
+    decide_next_node, # Action
     {
         "addition_operation": "add_node",
         "subtraction_operation": "subtract_node"
     }
-
 )
 
 graph.add_edge("add_node", END)
@@ -58,5 +56,5 @@ display(Image(app.get_graph().draw_mermaid_png()))
 initial_state_1 = AgentState(number1 = 10, operation="-", number2 = 5)
 print(app.invoke(initial_state_1))
 
-result = app.invoke({"number1": 10, "operation": "-", "number2": 5})
-print(result)
+# result = app.invoke({"number1": 10, "operation": "-", "number2": 5})
+# print(result)

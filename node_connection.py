@@ -34,4 +34,4 @@ display(Image(app.get_graph().draw_mermaid_png()))
 
 input = AgentState(name='Simon', age=22)
 response = app.invoke(input)
-response['final']
+print(response['final'])
